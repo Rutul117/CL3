@@ -1,0 +1,3 @@
+- DC pracs
+- if prac 1 doesnt work, use prac 6 from CI
+- csv file is for prac 5
