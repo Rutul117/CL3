@@ -1,6 +1,6 @@
 ## 1. **Introduction**
 >  
-"Sir/Ma'am, I have implemented the **Ant Colony Optimization** (ACO) algorithm to solve the **Traveling Salesman Problem** using Python.  
+"I have implemented the **Ant Colony Optimization** (ACO) algorithm to solve the **Traveling Salesman Problem** using Python.  
 ACO is a **nature-inspired algorithm** that simulates the behavior of real ants finding the shortest path to food by laying down **pheromone trails**."
 
 ---
