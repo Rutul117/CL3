@@ -6,10 +6,11 @@ class Server:
         self.id = id
         self.weight = weight
         self.active_connections = 0
+        self.busy_time = 0  # To track server's busy time
 
     def __str__(self):
         return f"Server {self.id} [Connections: {self.active_connections}]"
-
+        
 class Request:
     def __init__(self, id):
         self.id = id
@@ -20,6 +21,9 @@ class LoadBalancer:
         self.servers = servers
         self.rr_index = 0
         self.weight_index = 0
+        self.total_requests = 0
+        self.total_waiting_time = 0
+        self.total_simulation_time = 0  # To track the total time of all requests
 
     def assign_round_robin(self, request):
         server = self.servers[self.rr_index]
@@ -42,10 +46,27 @@ class LoadBalancer:
         self.process(server, request)
 
     def process(self, server, request):
+        # Track the time spent on each request (waiting time)
+        start_time = time.time()
         print(f"Request {request.id} → {server} | Time: {request.processing_time}s")
-        time.sleep(0.1)  # simulate processing
+        # Simulate processing based on the processing time (in seconds)
+        time.sleep(request.processing_time)  # Process for the actual request time
         server.active_connections -= 1
+        end_time = time.time()
 
+        # Add the time spent on this request to the server's busy time
+        server.busy_time += request.processing_time  # Busy time is directly the processing time
+        self.total_simulation_time += request.processing_time  # Adding the actual processing time
+        # Track the waiting time
+        self.total_waiting_time += request.processing_time
+        self.total_requests += 1
+        
+    def calculate_utilization(self):
+        # Normalize server utilization as a percentage of total simulation time
+        server_utilization = {
+            server.id: round((server.busy_time / self.total_simulation_time) * 100, 2 )for server in self.servers
+        }
+        return server_utilization
 def simulate(algorithm):
     print(f"\n🔁 Simulating {algorithm.upper()} Load Balancing\n")
     servers = [Server(i, weight=random.randint(1, 3)) for i in range(3)]
@@ -62,9 +83,13 @@ def simulate(algorithm):
         else:
             print("Unknown algorithm")
             break
-
-# Run all three
+    # After all requests are processed, calculate the average waiting time and server utilization
+    avg_waiting_time = lb.total_waiting_time / lb.total_requests
+    server_utilization = lb.calculate_utilization()
+    # Print the results
+    print(f"\nTotal Requests Processed: {lb.total_requests},")
+    print(f"Average Waiting Time: {avg_waiting_time:.2f} seconds,")
+    print(f"Server Utilization: {server_utilization},\n")
 simulate("rr")
 simulate("lc")
 simulate("wrr")
-
