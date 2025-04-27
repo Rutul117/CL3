@@ -1,5 +1,3 @@
----
-
 ### 1. **Introduction to Fuzzy Sets**
 Start by introducing the basic idea behind fuzzy sets.
 
