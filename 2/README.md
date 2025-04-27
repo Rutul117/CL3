@@ -1,5 +1,3 @@
-When explaining the concept of a **fuzzy set** to an examiner, you should aim to provide a **clear and structured response** that highlights the key concepts and the relevance of fuzzy sets. Here's a breakdown of how you can explain it concisely but thoroughly:
-
 ---
 
 ### 1. **Introduction to Fuzzy Sets**
