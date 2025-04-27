@@ -9,8 +9,8 @@ class Server:
         self.busy_time = 0  # To track server's busy time
 
     def __str__(self):
-        return f"Server {self.id} [Connections: {self.active_connections}]"
-        
+        return f"Server {self.id} [Connections: {self.active_connections}, Weight: {self.weight}]"
+
 class Request:
     def __init__(self, id):
         self.id = id
@@ -40,6 +40,8 @@ class LoadBalancer:
         weights = [s.weight for s in self.servers]
         total_weight = sum(weights)
         flat_list = [server for server in self.servers for _ in range(server.weight)]
+        
+        # Now, assign the server from the flat list
         server = flat_list[self.weight_index % total_weight]
         self.weight_index += 1
         server.active_connections += 1
@@ -50,7 +52,8 @@ class LoadBalancer:
         start_time = time.time()
         print(f"Request {request.id} → {server} | Time: {request.processing_time}s")
         # Simulate processing based on the processing time (in seconds)
-        time.sleep(request.processing_time)  # Process for the actual request time
+        # time.sleep(request.processing_time)  # Process for the actual request time
+        time.sleep(0.1)
         server.active_connections -= 1
         end_time = time.time()
 
@@ -67,6 +70,7 @@ class LoadBalancer:
             server.id: round((server.busy_time / self.total_simulation_time) * 100, 2 )for server in self.servers
         }
         return server_utilization
+
 def simulate(algorithm):
     print(f"\n🔁 Simulating {algorithm.upper()} Load Balancing\n")
     servers = [Server(i, weight=random.randint(1, 3)) for i in range(3)]
@@ -83,6 +87,7 @@ def simulate(algorithm):
         else:
             print("Unknown algorithm")
             break
+
     # After all requests are processed, calculate the average waiting time and server utilization
     avg_waiting_time = lb.total_waiting_time / lb.total_requests
     server_utilization = lb.calculate_utilization()
@@ -90,6 +95,7 @@ def simulate(algorithm):
     print(f"\nTotal Requests Processed: {lb.total_requests},")
     print(f"Average Waiting Time: {avg_waiting_time:.2f} seconds,")
     print(f"Server Utilization: {server_utilization},\n")
+# Run all three
 simulate("rr")
 simulate("lc")
 simulate("wrr")
