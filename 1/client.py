@@ -7,6 +7,8 @@ while True:
     user_input = input("Enter a number to calculate factorial (or type 'exit' to quit): ")
     if user_input.lower() == "exit":
         print("Client exited.")
+        # Call the shutdown method on the server
+        proxy.shutdown()
         break
     try:
         num = int(user_input)
