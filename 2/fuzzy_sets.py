@@ -10,6 +10,10 @@ B = {0: 0.3, 1: 0.7, 2: 0.4, 3: 0.9, 4: 0.5, 5: 0.1}
 # Union: max(A(x), B(x))
 def union(a, b):
     return {x: max(a[x], b[x]) for x in a}
+    # result = {}
+    #     for x in a:
+    #         result[x] = max(a[x], b[x])
+    #     return result
 
 # Intersection: min(A(x), B(x))
 def intersection(a, b):
